@@ -1,0 +1,2 @@
+# EdgeMind
+EdgeMindMCPMumbaiSummit
