@@ -1,0 +1,587 @@
+
+<h2 class="sr-only">EdgeMind MCP Summit — Expert audience Q&A with detailed answers</h2>
+<style>
+.wrap{padding:8px 0}
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.filter-btn{padding:5px 12px;border-radius:6px;border:0.5px solid var(--color-border-secondary);font-size:12px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;background:var(--color-background-secondary);transition:all .15s}
+.filter-btn.on{border-color:transparent}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;text-align:center}
+.stat-n{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.stat-l{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.q-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:10px;overflow:hidden;transition:border-color .15s}
+.q-card:hover{border-color:var(--color-border-secondary)}
+.q-header{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;cursor:pointer}
+.q-num{font-size:11px;font-weight:500;color:var(--color-text-tertiary);min-width:22px;padding-top:1px}
+.q-content{flex:1}
+.q-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.q-text{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.4}
+.badge{font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.diff{font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;white-space:nowrap;margin-left:auto;flex-shrink:0}
+.diff-h{background:#FCEBEB;color:#791F1F}
+.diff-m{background:#FAEEDA;color:#633806}
+.diff-e{background:#EAF3DE;color:#27500A}
+.chevron{color:var(--color-text-tertiary);font-size:11px;flex-shrink:0;margin-top:2px;transition:transform .2s}
+.chevron.open{transform:rotate(180deg)}
+.q-body{display:none;padding:0 14px 14px}
+.q-body.open{display:block}
+.answer-block{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px;margin-bottom:10px}
+.answer-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;color:var(--color-text-tertiary);margin-bottom:6px}
+.answer-text{font-size:12px;color:var(--color-text-primary);line-height:1.7}
+.code-line{font-family:var(--font-mono);font-size:11px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:4px;padding:4px 8px;margin:4px 0;display:block;color:var(--color-text-primary)}
+.insight-row{display:flex;gap:8px;margin-bottom:5px;font-size:12px;align-items:flex-start}
+.dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.follow-btn{font-size:11px;padding:4px 10px;border-radius:5px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;margin-top:8px}
+.follow-btn:hover{background:var(--color-background-tertiary)}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:10px 0}
+.warn-box{border-left:2px solid #EF9F27;background:#FAEEDA20;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:8px 10px;margin-top:8px;font-size:11px;color:var(--color-text-secondary)}
+.tip-box{border-left:2px solid #1D9E75;background:#E1F5EE20;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:8px 10px;margin-top:8px;font-size:11px;color:var(--color-text-secondary)}
+</style>
+
+<div class="wrap">
+
+<div class="stats">
+  <div class="stat"><div class="stat-n">18</div><div class="stat-l">total questions</div></div>
+  <div class="stat"><div class="stat-n">6</div><div class="stat-l">categories</div></div>
+  <div class="stat"><div class="stat-n">7</div><div class="stat-l">hard questions</div></div>
+  <div class="stat"><div class="stat-n">3</div><div class="stat-l">known issues to fix</div></div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn on" style="background:#E6F1FB;color:#0C447C;border-color:#85B7EB" onclick="filter('all',this)">All</button>
+  <button class="filter-btn" onclick="filter('security',this)">Security & IAM</button>
+  <button class="filter-btn" onclick="filter('mcp',this)">MCP architecture</button>
+  <button class="filter-btn" onclick="filter('inference',this)">Inference & perf</button>
+  <button class="filter-btn" onclick="filter('training',this)">Training & LoRA</button>
+  <button class="filter-btn" onclick="filter('hardware',this)">Hardware</button>
+  <button class="filter-btn" onclick="filter('governance',this)">Governance</button>
+</div>
+
+<div id="qlist">
+
+<!-- Q1 -->
+<div class="q-card" data-cat="mcp">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">01</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#E6F1FB;color:#0C447C">MCP architecture</span>
+        <span class="diff diff-h">hard</span>
+      </div>
+      <div class="q-text">Is this actually MCP-compliant? The spec defines JSON-RPC 2.0 over stdio/SSE. Your McpServer is just an in-process Kotlin class.</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">No, it is not wire-protocol compliant — and that is intentional. EdgeMind implements the MCP conceptual model, not the transport layer.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">The MCP spec assumes a network boundary between client and server — JSON-RPC 2.0 over stdio or SSE exists to cross that boundary. On a single device with no network surface, that transport is pure overhead. EdgeMind keeps the meaningful abstractions — named tools, scoped capability tokens, a server that enforces guardrails before routing — and replaces the wire format with direct Kotlin coroutine dispatch inside the same process. The argument is that the protocol's value is the orchestration pattern, not the serialisation format. If spec compliance were required, you would wrap <span class="code-line">McpServer.handleToolCall()</span> in a JSON-RPC 2.0 handler over a local Unix socket — that is a one-file change and does not alter any of the architectural claims.</div>
+    </div>
+    <div class="tip-box">Summit framing: "We implement MCP semantics, not MCP transport. On a device with no network boundary, the transport layer is irrelevant — what matters is the orchestration contract."</div>
+    <button class="follow-btn" onclick="sendPrompt('What would full JSON-RPC 2.0 MCP compliance look like for EdgeMind?')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="q-card" data-cat="security">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">02</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FAECE7;color:#712B13">Security & IAM</span>
+        <span class="diff diff-h">hard</span>
+      </div>
+      <div class="q-text">Your IamService.verifyToken() says "in production: verify EC signature" but doesn't actually verify it. So any JWT string passes?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Yes — signature verification is skipped in this demo. Token issuance is real, verification is payload-only parsing.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">Token issuance is genuine — Android Keystore generates an EC P-256 keypair and the JWT is signed with SHA256withECDSA inside the hardware TEE. The private key never leaves the secure enclave. However, <span class="code-line">IamService.verifyToken()</span> currently only parses the payload — it does not verify the signature. This is a deliberate demo simplification because the issuer and verifier are the same process: a forged token cannot arrive since there is no network surface. In a multi-process or multi-device scenario, the signature check is mandatory. The <span class="code-line">verifyToken()</span> method exists precisely to mark where that fix goes — it is one call to the Android Keystore Signature.verify() API.</div>
+    </div>
+    <div class="warn-box">Known issue to fix before the summit: add <code>Signature.getInstance("SHA256withECDSA").verify(signatureBytes)</code> inside verifyToken(). Takes ~20 minutes.</div>
+    <button class="follow-btn" onclick="sendPrompt('How would you implement full ES256 JWT verification on Android using the Keystore?')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="q-card" data-cat="mcp">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">03</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#E6F1FB;color:#0C447C">MCP architecture</span>
+        <span class="diff diff-m">medium</span>
+      </div>
+      <div class="q-text">You have one agent hardcoded as "assistant-agent" with AgentRole.ELEVATED. Where is the multi-agent orchestration you are claiming?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">The infrastructure supports multiple agents — the demo exercises only one. All agents hardcoded to ELEVATED is a known bug to fix before the summit.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">McpClient and McpServer are designed for multiple clients — ToolRegistry is shared, tokens are per-agent, and AuditJournal tracks by agentId. The current demo instantiates one ELEVATED client. A real multi-agent scenario would instantiate:
+        <span class="code-line">DEFAULT client → intake agent (SLM + knowledge read only)</span>
+        <span class="code-line">ELEVATED client → inference agent (+ LLM access)</span>
+        <span class="code-line">SYSTEM client → audit agent (+ microphone + audit write)</span>
+        All three share the same McpServer instance. The infrastructure is there — the demo only exercises one agent. The most impactful 30 minutes before the summit is instantiating a DEFAULT client and showing it receive ToolResult.Unauthorized when it tries to call the LLM tool. That is the RBAC demo the governance story requires.</div>
+    </div>
+    <div class="warn-box">Known issue: McpClient.kt:67 hardcodes ELEVATED for all agents. Fix: instantiate a second DEFAULT client to demonstrate scope enforcement live on stage.</div>
+    <button class="follow-btn" onclick="sendPrompt('Show me how to instantiate a DEFAULT agent and demonstrate ToolResult.Unauthorized in EdgeMind')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="q-card" data-cat="inference">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">04</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#EAF3DE;color:#27500A">Inference & perf</span>
+        <span class="diff diff-h">hard</span>
+      </div>
+      <div class="q-text">Your benchmark shows 180ms prefill for Phi-3 Mini at 128 tokens. Snapdragon 8 Gen 3 HTP peak is ~10 TOPS. Does the math check out?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Yes — 180ms is plausible when accounting for memory bandwidth bottlenecks, not just compute throughput.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">Phi-3 Mini int4 is ~2.1 GB model weight. At 128 tokens, prefill is a matrix multiply over ~3.8B parameters quantised to 4-bit — roughly 1.9 GOPS. At 10 TOPS peak and accounting for memory bandwidth bottlenecks (LPDDR5X at ~77 GB/s on the SM8650), 180ms is realistic. The critical constraint is not compute but memory bandwidth — loading 2.1 GB of weights per forward pass at 77 GB/s gives ~27ms of pure memory load time, and the HTP has limited on-chip SRAM. The QAI Hub export targets SM8650 with HTP-specific op lowering and operator fusion that naive ONNX export would miss — that is where the 180ms number comes from, not raw TOPS arithmetic.
+        <span class="code-line">Decode: 90ms / 64 tokens = ~1.4ms per token → ~714 tok/s decode throughput</span>
+      </div>
+    </div>
+    <div class="tip-box">Key insight: for LLM inference on-device, the bottleneck is almost always memory bandwidth (GB/s), not arithmetic throughput (TOPS). Know this distinction — it will come up.</div>
+    <button class="follow-btn" onclick="sendPrompt('Explain why memory bandwidth bottlenecks matter more than TOPS for on-device LLM inference')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card" data-cat="security">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">05</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FAECE7;color:#712B13">Security & IAM</span>
+        <span class="diff diff-h">hard</span>
+      </div>
+      <div class="q-text">The GuardModel regex patterns are visible in the APK. An attacker can just avoid those exact strings and bypass the guard entirely.</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Correct for the heuristic layer. The real guard is the 60M-parameter neural classifier which is opaque and cannot be pattern-matched against.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">The architecture has two guard layers: (1) heuristicClassify() — regex patterns for obvious cases, intentionally transparent, fast pre-filter when native is unavailable. (2) nativeClassify() — a 60M-parameter .pte neural classifier compiled via ExecuTorch that runs in 22ms on the HTP. The 22ms latency is the giveaway — a rule-based filter runs in microseconds, not milliseconds. A neural classifier is an opaque function that does not pattern-match on strings, so knowing the regex patterns does not help bypass it. The security model also assumes the device owner is the attacker's adversary — prompt injection from a user of the app, not someone with APK access. APK-level attackers have already compromised the device.</div>
+    </div>
+    <div class="warn-box">Known issue: nativeClassify() is currently a stub. Before the summit, the real classifier needs to be wired in — otherwise the only guard is the visible regex layer, which is genuinely bypassable.</div>
+    <button class="follow-btn" onclick="sendPrompt('What are the threat model assumptions for EdgeMind GuardModel security?')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="q-card" data-cat="training">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">06</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FAEEDA;color:#633806">Training & LoRA</span>
+        <span class="diff diff-h">hard</span>
+      </div>
+      <div class="q-text">You call this federated learning. But there is no aggregation server, no secure aggregation, no differential privacy, and no global model improvement. That is just local fine-tuning.</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">You are correct. The accurate framing is "client-side FL" — the part of federated learning that runs on the device, without the aggregation server.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">True FL (Google FedAvg, PySyft, Flower) requires: aggregation server, secure aggregation, differential privacy (noise injection), multiple participating devices, and global model improvement. EdgeMind has none of these. What it does match: data stays on device, model updates not raw data, PII protection via anonymise(), asynchronous training via WorkManager. The honest framing is: "This is on-device personalisation — the privacy-preserving end of the federated learning spectrum. Your device gets better from your interactions; nobody else benefits or contributes." The LoRA adapter could theoretically be shared as a model delta — that would be the aggregation step — but it is never is. Reserve "federated learning" for the full stack and use "client-side FL" or "on-device personalisation" instead.</div>
+    </div>
+    <div class="tip-box">Recommended summit framing: "federated learning without the federation — client-side only, maximum privacy, zero coordination overhead."</div>
+    <button class="follow-btn" onclick="sendPrompt('What would need to be added to EdgeMind to make it true federated learning?')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="q-card" data-cat="inference">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">07</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#EAF3DE;color:#27500A">Inference & perf</span>
+        <span class="diff diff-m">medium</span>
+      </div>
+      <div class="q-text">Why use FAISS on Android rather than SQLite FTS5 with vector extension, or an ONNX-based ANN search?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">FAISS gives exact control over index type and fits the 5k-vector demo scale at ~10MB. SQLite vector extensions are still experimental.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">FAISS IndexFlatL2 over 5k vectors at 384 dimensions fits in ~10MB memory and returns results in 4ms on XNNPACK. The flat index is exact — no approximation error. For a clinical KB growing to 100k+ chunks, you would switch to an IVF index for sub-linear search time. SQLite vector extensions (sqlite-vss, sqlite-vec) are still experimental, lack index variety, and do not have stable arm64-v8a builds. The tradeoff is that FAISS requires a native .so build for arm64-v8a, whereas SQLite is already on-device. For a larger production system, SQLite + vss or a purpose-built on-device vector store would reduce the native dependency surface — but for this demo, FAISS is the right call.
+        <span class="code-line">5k vectors × 384 dims × 4 bytes = ~7.7 MB index size</span>
+      </div>
+    </div>
+    <button class="follow-btn" onclick="sendPrompt('How would you scale EdgeMind RAG from 5k to 100k+ vectors on Android?')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="q-card" data-cat="hardware">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">08</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#EEEDFE;color:#3C3489">Hardware</span>
+        <span class="diff diff-m">medium</span>
+      </div>
+      <div class="q-text">What happens if the .pte files are not in assets? Does the app crash on launch?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">No crash — every engine falls back to Kotlin mock implementations. The full demo runs on any Android 10+ device or emulator.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">ExecuTorchRunner catches UnsatisfiedLinkError on System.loadLibrary("executorch_jni") and sets nativeAvailable = false. Every inference engine (SlmInferenceEngine, LlmInferenceEngine, GuardModel) checks runner.isReady() before calling native code and falls through to Kotlin mock implementations that return plausible responses. This means:
+        <span class="code-line">No .pte files + no native libs → full mock demo on any Android 10+ device</span>
+        <span class="code-line">HTP available → real inference at published benchmark numbers</span>
+        The benchmark numbers on the slides are only valid on Snapdragon 8 Gen 3 HTP hardware. For the Mumbai summit, mock mode means presenting from any Android phone or even an emulator if the target device is unavailable.</div>
+    </div>
+    <div class="tip-box">Summit tip: always have mock mode ready as a fallback. Demo gods are real.</div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="q-card" data-cat="governance">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">09</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FBEAF0;color:#72243E">Governance</span>
+        <span class="diff diff-m">medium</span>
+      </div>
+      <div class="q-text">The HMAC-signed audit log is on-device in Room. How does it prevent the device owner from tampering with their own audit log?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">It does not prevent a determined device owner from tampering — HMAC proves integrity of individual entries, not chain custody across a tampered database.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">The HMAC-SHA256 signature on each audit entry proves that a specific entry was not modified after creation — if you change a field, the hash will not match. But a device owner with root access could delete entries from Room, or replace the entire database. The threat model here is: (1) proving to a regulator what happened, given a cooperative device, and (2) detecting accidental or app-level tampering. For stronger guarantees in regulated domains, you would add: remote attestation (Android SafetyNet/Play Integrity), log synchronisation to a write-only cloud endpoint, or a hardware-backed append-only log. The current design is appropriate for GDPR/DPDP audit trails where the device owner is also the data subject — not for adversarial audit scenarios.</div>
+    </div>
+    <button class="follow-btn" onclick="sendPrompt('How would you make EdgeMind audit trail tamper-proof against a rooted device?')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card" data-cat="training">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">10</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FAEEDA;color:#633806">Training & LoRA</span>
+        <span class="diff diff-m">medium</span>
+      </div>
+      <div class="q-text">LoRA training on 500 samples with rank 8 for 3 epochs — what is the actual memory footprint and how do you stay within 800MB?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Layer-by-layer fragmentation — only one transformer layer's activations and gradients are in memory at a time, not the full model.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">Phi-3 Mini has 32 transformer layers. Full backprop would require storing activations for all 32 layers simultaneously — at 3.8B params int4 that is impractical on mobile. LoRA reduces the trainable parameter count dramatically: rank 8 adapters for each attention projection = ~8 × 8 × hidden_dim parameters per layer, roughly 0.1% of total params. Layer-by-layer fragmentation means: forward pass layer N → store only layer N activations → backward pass layer N → discard → move to N-1. Combined with gradient checkpointing (recompute activations on the backward pass instead of storing them), this keeps peak memory inside ~800MB on 12GB LPDDR5X devices. The 800MB ceiling is a soft constraint — WorkManager idle+charging condition also ensures the OS has not paged out memory to other apps.
+        <span class="code-line">LoRA params: rank=8, alpha=16 → ~4M trainable params vs 3.8B total = 0.1%</span>
+      </div>
+    </div>
+    <button class="follow-btn" onclick="sendPrompt('Explain gradient checkpointing and how it enables LoRA training on mobile devices')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="q-card" data-cat="inference">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">11</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#EAF3DE;color:#27500A">Inference & perf</span>
+        <span class="diff diff-m">medium</span>
+      </div>
+      <div class="q-text">The MetricsOverlay shows a randomly fluctuating 50–80% NPU value. How are you actually reading NPU utilisation on Android?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Currently it is simulated. Android does not expose a public NPU utilisation API — this is a known issue to fix before the summit.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">Android has no public API equivalent to GPU utilisation (which you can read via Debug.getMemoryInfo()). Real NPU utilisation on Snapdragon requires either: (1) Qualcomm's proprietary QNN profiling API which returns per-layer execution times — derivable into an approximate utilisation, or (2) reading /sys/class/kgsl/ nodes which expose GPU but not HTP utilisation, or (3) using QAI Hub profiling output during development. The fluctuating 50–80% number in MetricsOverlay is currently a random value. Before the summit: either remove NPU% from the overlay entirely, relabel it as "simulated", or wire in QNN profiling data from the ExecuTorch backend delegate. Someone in a technical audience will ask — this will raise an eyebrow.</div>
+    </div>
+    <div class="warn-box">Known issue to fix: MetricsOverlay NPU% is randomly generated. Either remove it or relabel "simulated" — 5 minute fix.</div>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="q-card" data-cat="security">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">12</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FAECE7;color:#712B13">Security & IAM</span>
+        <span class="diff diff-e">easy</span>
+      </div>
+      <div class="q-text">Why does GuardModel run before IAM validation, not after? Seems wasteful to classify prompts that might have an invalid token anyway.</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Safety is more important than efficiency — a blocked prompt should never reach the token check, even on an invalid token path.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">The ordering is deliberate: GuardModel → IAM → ToolRegistry → Handler. If IAM ran first: a valid token + blocked content would reach the guard. If the guard ran second: a window exists where a jailbreak prompt with a valid token could theoretically escape if the guard has a bug. Running the guard first means zero tokens are ever processed by Phi-3 or the 7B model if GuardModel blocks — even on the fast-path with a valid, elevated-scope token. The 22ms guard latency is less than a network round-trip to a cloud API, so the cost is negligible. This ordering also means blocked prompts never incur the IAM keystore lookup cost — a mild efficiency benefit for high-volume block scenarios.</div>
+    </div>
+    <div class="tip-box">The 22ms number is the summit punchline: "Our safety layer adds less latency than a network round-trip to a cloud guardrails API — and it runs before any LLM token is processed."</div>
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="q-card" data-cat="mcp">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">13</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#E6F1FB;color:#0C447C">MCP architecture</span>
+        <span class="diff diff-e">easy</span>
+      </div>
+      <div class="q-text">What is the confidence threshold of 0.75 based on? Is it empirically validated or just a chosen constant?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">It is a chosen constant in the current implementation — not empirically validated on a held-out clinical or domain-specific dataset.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">The 0.75 threshold is a hyperparameter that controls the cost/latency vs quality tradeoff in the three-path routing. Below 0.75 → RAG fallback (adds ~50ms). Still below 0.75 after RAG → LLM escalation (adds 1-5s). A higher threshold escalates more aggressively to RAG/LLM, increasing quality but latency. A lower threshold keeps more in SLM, faster but potentially lower accuracy. The right value is domain-dependent: for medical triage you would want a higher threshold (less tolerance for uncertainty); for general chat you accept more SLM responses. The honest answer to this question is: "0.75 is a reasonable starting point — the on-device LoRA training loop will eventually learn domain-specific confidence calibration from accepted interactions, which is a better long-term answer than a fixed constant."</div>
+    </div>
+    <button class="follow-btn" onclick="sendPrompt('How would you calibrate the confidence threshold empirically for a medical deployment of EdgeMind?')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+<!-- Q14 -->
+<div class="q-card" data-cat="training">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">14</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FAEEDA;color:#633806">Training & LoRA</span>
+        <span class="diff diff-h">hard</span>
+      </div>
+      <div class="q-text">The training record hardcodes confidence as 0.85f. How does the model know which training samples are high quality vs low quality?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Currently it does not — all samples are treated equally due to the hardcoded 0.85f. This is a known bug to fix before the summit.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">AssistantViewModel.kt:181 calls:
+        <span class="code-line">dataset.record(prompt, responseText, "slm", 0.85f) ← hardcoded</span>
+        The fix is two minutes:
+        <span class="code-line">dataset.record(prompt, responseText, path, parseConfidenceFromResponse(result.data) ?: 0.85f)</span>
+        Without the actual confidence score, the training loop treats a low-confidence LLM response the same as a high-confidence SLM response. Ideally, you would also add user feedback (thumbs up/down) as an additional quality signal — currently the accepted: Boolean flag in InteractionRecord is never set by user action. The training loop queries "SELECT accepted interactions" but everything is accepted by default. True quality-weighted training requires both the actual confidence score and user feedback signals.</div>
+    </div>
+    <div class="warn-box">Known bug: AssistantViewModel.kt:181 — replace hardcoded 0.85f with actual confidence from result.data. 2-minute fix, high impact on training quality story.</div>
+  </div>
+</div>
+
+<!-- Q15 -->
+<div class="q-card" data-cat="governance">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">15</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FBEAF0;color:#72243E">Governance</span>
+        <span class="diff diff-m">medium</span>
+      </div>
+      <div class="q-text">You claim GDPR and DPDP compliance. What specific articles does the design address and what is still missing?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">What the design addresses</div>
+      <div class="answer-text">
+        <div class="insight-row"><div class="dot" style="background:#1D9E75"></div><span>Data minimisation (GDPR Art. 5): PII anonymised before storage via InteractionDataset.anonymise()</span></div>
+        <div class="insight-row"><div class="dot" style="background:#1D9E75"></div><span>Storage limitation: gradients never leave the device, no cloud sync</span></div>
+        <div class="insight-row"><div class="dot" style="background:#1D9E75"></div><span>Integrity & confidentiality: HMAC-signed audit log, Android Keystore hardware backing</span></div>
+        <div class="insight-row"><div class="dot" style="background:#1D9E75"></div><span>Accountability: every agent action logged with agentId, timestamp, path, confidence</span></div>
+      </div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">What is still missing</div>
+      <div class="answer-text">
+        <div class="insight-row"><div class="dot" style="background:#E24B4A"></div><span>Right to erasure (GDPR Art. 17): no mechanism to delete a user's interaction records from Room</span></div>
+        <div class="insight-row"><div class="dot" style="background:#E24B4A"></div><span>Right to access (Art. 15): no export of personal data in portable format</span></div>
+        <div class="insight-row"><div class="dot" style="background:#E24B4A"></div><span>Consent management: no explicit consent flow before training on interactions</span></div>
+        <div class="insight-row"><div class="dot" style="background:#E24B4A"></div><span>Data Protection Impact Assessment: not demonstrated</span></div>
+      </div>
+    </div>
+    <div class="tip-box">Honest summit framing: "The architecture is GDPR-compatible by design — data never leaves the device. Production compliance requires erasure, access, and consent flows on top."</div>
+  </div>
+</div>
+
+<!-- Q16 -->
+<div class="q-card" data-cat="hardware">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">16</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#EEEDFE;color:#3C3489">Hardware</span>
+        <span class="diff diff-e">easy</span>
+      </div>
+      <div class="q-text">Why does the Vulkan backend exist if HTP handles SLM and LLM inference? When does it actually fire?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Vulkan is a GPU fallback for the LLM path when HTP headroom is saturated — camera, gaming, or other NPU-intensive apps can exhaust HTP capacity.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">The Snapdragon 8 Gen 3 HTP has limited concurrent capacity — if another app (camera computational photography, on-device speech recognition) has locked HTP resources, the LLM path falls back to Vulkan GPU compute. Vulkan is listed in AssistantViewModel.kt:229 as a secondary backend. It is slower than HTP for transformer workloads (no dedicated tensor instruction set) but faster than XNNPACK CPU for the 7B model. The compute backend priority is: HTP (primary) → Vulkan (GPU fallback) → XNNPACK (CPU last resort). XNNPACK handles RAG embeddings exclusively because MiniLM at 384 dimensions does not benefit from HTP's large-batch optimisation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q17 -->
+<div class="q-card" data-cat="governance">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">17</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#FBEAF0;color:#72243E">Governance</span>
+        <span class="diff diff-e">easy</span>
+      </div>
+      <div class="q-text">The Aadhaar pattern in GuardModel has false positive risk. What specific pattern are you using and why is it risky?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">A 12-digit number regex will false-positive on phone numbers, order IDs, and timestamps — all common in clinical contexts.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">Aadhaar numbers are 12 digits, typically formatted as XXXX XXXX XXXX. A naive regex like \d{12} or \d{4}\s\d{4}\s\d{4} will also match: 12-digit phone numbers (common in India), medical record numbers, timestamps in milliseconds, and long order or batch IDs. In a clinical context where patients dictate symptoms and a doctor types notes, the false positive rate could be high enough to block legitimate queries. The fix is a more specific pattern: Luhn-check validation (Aadhaar uses a Verhoeff checksum), prefix exclusion (valid Aadhaar starts with 2–9), and context windowing (surrounding words should not contain medical terms). Before the summit, either tighten the pattern or add a manual override for verified clinical users.</div>
+    </div>
+    <div class="warn-box">Known issue: Aadhaar regex false positive risk. Add Verhoeff checksum validation to reduce false positives in clinical text contexts.</div>
+  </div>
+</div>
+
+<!-- Q18 -->
+<div class="q-card" data-cat="inference">
+  <div class="q-header" onclick="tog(this)">
+    <span class="q-num">18</span>
+    <div class="q-content">
+      <div class="q-row">
+        <span class="badge" style="background:#EAF3DE;color:#27500A">Inference & perf</span>
+        <span class="diff diff-h">hard</span>
+      </div>
+      <div class="q-text">Greedy decoding produces repetitive outputs for longer LLM generations. Why not use beam search or sampling with temperature?</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="q-body">
+    <div class="answer-block">
+      <div class="answer-label">Short answer</div>
+      <div class="answer-text">Greedy decoding is a deliberate choice for clinical safety — deterministic, reproducible, and auditable. Temperature sampling introduces non-determinism that conflicts with the audit trail story.</div>
+    </div>
+    <div class="answer-block">
+      <div class="answer-label">Detailed explanation</div>
+      <div class="answer-text">In a regulated medical context, the audit trail logs every inference decision with path, confidence, and latency. Temperature sampling means the same prompt produces different outputs on re-runs — breaking the reproducibility guarantee that makes the audit log meaningful. Greedy decoding (argmax at each step) is deterministic: given the same model weights and prompt, you always get the same output. This means: (1) you can reproduce any logged inference from the audit trail, (2) there is no variance in clinical advice that could be attributed to sampling randomness. Beam search would improve output quality at the cost of 2-5× latency per token — acceptable for an LLM path that is already 1-5s, but requires careful memory management. The current greedy approach is the right default for a regulated domain demo; beam search and top-p sampling are worthwhile future improvements.</div>
+    </div>
+    <button class="follow-btn" onclick="sendPrompt('What are the tradeoffs between greedy decoding, beam search, and temperature sampling for clinical AI on-device?')">Ask follow-up ↗</button>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+function tog(header) {
+  const body = header.parentElement.querySelector('.q-body');
+  const chev = header.querySelector('.chevron');
+  const open = body.classList.toggle('open');
+  chev.classList.toggle('open', open);
+}
+function filter(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.remove('on');
+    b.style.background = '';
+    b.style.color = '';
+    b.style.borderColor = '';
+  });
+  btn.classList.add('on');
+  btn.style.background = '#E6F1FB';
+  btn.style.color = '#0C447C';
+  btn.style.borderColor = '#85B7EB';
+  document.querySelectorAll('.q-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+}
+</script>
